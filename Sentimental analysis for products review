@@ -1,0 +1,45 @@
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+# Download NLTK resources (only required if not already downloaded)
+nltk.download('vader_lexicon')
+
+# Initialize the sentiment analyzer
+sid = SentimentIntensityAnalyzer()
+
+def analyze_sentiment(review):
+    """
+    Analyzes the sentiment of a given review.
+
+    Parameters:
+    review (str): The text of the review.
+
+    Returns:
+    str: Sentiment label ('positive', 'negative', or 'neutral')
+    """
+    # Analyze sentiment using VADER (Valence Aware Dictionary and sEntiment Reasoner)
+    scores = sid.polarity_scores(review)
+
+    # Determine sentiment label based on compound score
+    if scores['compound'] >= 0.05:
+        return 'positive'
+    elif scores['compound'] <= -0.05:
+        return 'negative'
+    else:
+        return 'neutral'
+
+# Example usage
+if __name__ == "__main__":
+    # Example product reviews
+    reviews = [
+        "This product is amazing! It exceeded all my expectations.",
+        "I'm very disappointed with the quality of this product.",
+        "It's an okay product, nothing special.",
+        "I love this product so much! Best purchase ever."
+        ]
+
+    # Analyze sentiment for each review
+    for i, review in enumerate(reviews, start=1):
+        sentiment = analyze_sentiment(review)
+        print(f"Review {i}: {review}")
+        print(f"Sentiment: {sentiment}\n")
